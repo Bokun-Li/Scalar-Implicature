@@ -1,5 +1,11 @@
-const jsPsych = initJsPsych();
-let timeline = [];
+
+const jsPsych = initJsPsych({
+    on_finish: function(data) {
+        proliferate.submit({"trials": data.values()});
+    }
+});
+
+let timeline = []
 // push experiment logic the timeline here...
 // ......
 
