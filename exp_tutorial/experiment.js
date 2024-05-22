@@ -32,6 +32,10 @@ timeline.push(sentence_picture_matching_task);
 
 
 
+
+
+
+
 // the second picture_sentence_matching_task to calculate P(u|w)
 const picture_sentence_matching_task = {
     type: jsPsychHtmlKeyboardResponse,
