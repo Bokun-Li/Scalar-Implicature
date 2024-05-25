@@ -30,10 +30,15 @@ const sentence_picture_matching_task = {
 timeline.push(sentence_picture_matching_task);
 
 
+const trials1 = {
+    type: jsPsychSurveyHtmlForm,
+    preamble:'<p>Context: Susan used a thermometer to measure water temperature and she said:<br>The water is warm.<br>Now please move the sliders and distribute coins to the options that show the water is warm.</p>',
 
-
-
-
+    html:'<div style="float:left"><label for="10"><img src="./visual stimuli-exp/temperature/10.png"></label><br><input type="range" id="10" name="10" min="0" max="100"></div>            <div style="float:left"><label for="20"><img src="./visual stimuli-exp/temperature/20.png"></label><br><input type="range" id="20" name="20" min="0" max="100"></div>         <div style="float:left"><label for="30"><img src="./visual stimuli-exp/temperature/30.png"></label><br><input type="range" id="30" name="30" min="0" max="100"></div>            <div style="float:left"><label for="40"><img src="./visual stimuli-exp/temperature/40.png"></label><br><input type="range" id="40" name="40" min="0" max="100"></div>           <div style="float:left"><label for="50"><img src="./visual stimuli-exp/temperature/50.png"></label><br><input type="range" id="50" name="50" min="0" max="100"></div>          <div style="float:left"><label for="60"><img src="./visual stimuli-exp/temperature/60.png"></label><br><input type="range" id="60" name="60" min="0" max="100"></div>            <div style="float:left"><label for="70"><img src="./visual stimuli-exp/temperature/70.png"></label><br><input type="range" id="70" name="70" min="0" max="100"></div>         <div style="float:left"><label for="80"><img src="./visual stimuli-exp/temperature/80.png"></label><br><input type="range" id="80" name="80" min="0" max="100"></div>         <div style="float:left"><label for="90"><img src="./visual stimuli-exp/temperature/90.png"></label><br><input type="range" id="90" name="90" min="0" max="100"></div>',
+    
+    choices: ['Continue']
+}
+ timeline.push(trials1)
 
 
 // the second picture_sentence_matching_task to calculate P(u|w)
