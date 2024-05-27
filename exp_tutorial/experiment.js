@@ -2,7 +2,8 @@
 const jsPsych = initJsPsych({
     on_finish: function(data) {
         proliferate.submit({"trials": data.values()});
-    }
+    },
+    show_progress_bar: true
 });
 
 let timeline = []
@@ -27,9 +28,11 @@ const sentence_picture_matching_task = {
     stimulus: "In this experiment, you will answer several sentence-picture-matching questions. In each question, you will see a sentence and several pictures and you have 100 coins to distribute. Please distribute the coins to the pictures you think properly match the meaning of the sentence. You can distrbiute different numbers of coins to multiple options. Try to respond as quickly and accurately as you can.<br>When you're ready to begin, press the space bar.",
     choices: [" "]
 };
+
 timeline.push(sentence_picture_matching_task);
 
 
+// trials1 of temperature
 const trials1 = {
     type: jsPsychSurveyHtmlForm,
     preamble:'<p>Context: Susan used a thermometer to measure water temperature and she said:<br>The water is warm.<br>Now please move the sliders and distribute coins to the options that show the water is warm.</p>',
@@ -51,4 +54,19 @@ const picture_sentence_matching_task = {
 timeline.push(picture_sentence_matching_task);
 
 
+//traials 10 of temperature
+const trials10 = {
+    type: jsPsychSurveyHtmlForm,
+    preamble:'<p>Context: Susan used a thermometer to measure water temperature and she saw the temperature below.<br>Please move the sliders and distribute coins to the options that match the description of image.<br><div style="float:left"><img src="./visual stimuli-exp/temperature/10.png"></div></p>',
+
+    html:'<div style="margin-top:100px"><label for="warm">The water is warm.</label><input type="range" id="warm" name="warm" min="0" max="100"></div>         <div style="margin-top:100px"><label for="hot">The water is hot.</label><input type="range" id="hot" name="hot" min="0" max="100"></div>           <div style="margin-top:100px; margin-bottom: 100px"><label for="scalding">The water is scalding.</label><input type="range" id="scalding" name="scalding" min="0" max="100"></div>',
+
+    choices:['Continue']
+}
+timeline.push(trials10)
+
+
+
 jsPsych.run(timeline)
+
+
