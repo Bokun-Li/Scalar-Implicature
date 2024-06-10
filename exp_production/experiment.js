@@ -25,7 +25,7 @@ timeline.push(consent);
 // the picture_sentence_matching_task to calculate P(u|w) [trials of production]
 const picture_sentence_matching_task = {
     type: jsPsychHtmlKeyboardResponse,
-    stimulus: "In this experiment, you will answer several picture-sentence-matching questions. In each question, you will see a picture and several utterances. Please move the sliders for each utterance to represent its possibility of being said in the picture. Make sure the sum of possibilities is 100. Try to respond as quickly and accurately as you can.<br>When you're ready to begin, press the space bar.",
+    stimulus: "In this experiment, you will answer several picture-sentence-matching questions. In each question, you will see a picture and several utterances. Please move the sliders for each utterance to represent its possibility of being said in the picture. Make sure the sum of possibilities is 100. Try to respond as quickly and accurately as you can.<br>The experiment is conducted in fullscreen mode. When you're ready to begin, please press the space bar.",
     choices: [" "]
 }
 
@@ -130,6 +130,16 @@ const exit_fullscreen = {
 }
 
 timeline.push(exit_fullscreen);
+
+//Reminder: The end of the language experiment
+const end_of_experiment = {
+    type:jsPsychHtmlKeyboardResponse,
+    stimulus:'<p style = "font-size: 30px;">Thanks for participation. This is the end of language experiment.<br>Please press the space bar to exit.</p>',
+    trial_duration: null,
+    choices:[' ']
+}
+
+timeline.push(end_of_experiment);
 
 jsPsych.run(timeline)
 
