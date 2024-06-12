@@ -25,7 +25,7 @@ timeline.push(consent);
 // the picture_sentence_matching_task to calculate P(u|w) [trials of production]
 const picture_sentence_matching_task = {
     type: jsPsychHtmlKeyboardResponse,
-    stimulus: "In this experiment, you will answer several picture-sentence-matching questions. In each question, you will see a picture and several utterances. Please move the sliders for each utterance to represent its possibility of being said in the picture. Make sure the sum of possibilities is 100. Try to respond as quickly and accurately as you can.<br>The experiment is conducted in fullscreen mode. When you're ready to begin, please press the space bar.",
+    stimulus: "In this experiment, you will see several scenes and answer questions about them. On each slide, you will see a picture and several utterances. Please move the sliders for each utterance to indicate how likely you think it is that the speaker would say this.<br>Note: The ratings must add up to 100 and the sliders will automatically snap back if you try to assign more than 100 points.<br>The experiment is conducted in fullscreen mode. When you're ready to begin, please press the space bar.",
     choices: [" "]
 }
 
@@ -39,27 +39,39 @@ const enter_fullscreen = {
 
 timeline.push(enter_fullscreen);
 
+
+
+// Introduction of temperature trials
+const intro_temperature = {
+    type:jsPsychHtmlButtonResponse,
+    stimulus: '<p>The experiment is divided into three parts. In the first part, you will see a similar scene presented below. In the scene, the customer on the left wanted to drink some tea but he did not know the water temperature and had to ask the waiter. While the waiter used a thermometer to measure water temperature and gave relevant answer.</p><div><img src="./visual stimuli-exp/temperature/20degree.png" height = "450"></div>',
+    prompt: '<p>If you have understood the example scene, please click the button and the first task will begin.</p>',
+    choices: ['Continue']
+}
+
+timeline.push(intro_temperature);
+
 //trials of temperature
 const trial_of_temperature = {
     type: jsPsychHtmlMultiSliderResponse,
     stimulus: jsPsych.timelineVariable('temperature'),
     num_sliders: 4,
     force_total: 100,
-    slider_labels: ["It is warm", "It is hot", "It is scalding", "Something else"],
+    slider_labels: ["It is warm", "It is hot", "It is scalding", "<em>Something else</em>"],
     slider_width: 800
 }
 const temperature_procedure = {
     timeline: [trial_of_temperature],
     timeline_variables: [
-        {temperature:'<div><img src="./visual stimuli-exp/temperature/10degree.png" height = "450"></div><p>How likely do you think the waiter will respond with each of the utterances below?</p>'},
-        {temperature:'<div><img src="./visual stimuli-exp/temperature/20degree.png" height = "450"></div><p>How likely do you think the waiter will respond with each of the utterances below?</p>'},
-        {temperature:'<div><img src="./visual stimuli-exp/temperature/30degree.png" height = "450"></div><p>How likely do you think the waiter will respond with each of the utterances below?</p>'},
-        {temperature:'<div><img src="./visual stimuli-exp/temperature/40degree.png" height = "450"></div><p>How likely do you think the waiter will respond with each of the utterances below?</p>'},
-        {temperature:'<div><img src="./visual stimuli-exp/temperature/50degree.png" height = "450"></div><p>How likely do you think the waiter will respond with each of the utterances below?</p>'},
-        {temperature:'<div><img src="./visual stimuli-exp/temperature/60degree.png" height = "450"></div><p>How likely do you think the waiter will respond with each of the utterances below?</p>'},
-        {temperature:'<div><img src="./visual stimuli-exp/temperature/70degree.png" height = "450"></div><p>How likely do you think the waiter will respond with each of the utterances below?</p>'},
-        {temperature:'<div><img src="./visual stimuli-exp/temperature/80degree.png" height = "450"></div><p>How likely do you think the waiter will respond with each of the utterances below?</p>'},
-        {temperature:'<div><img src="./visual stimuli-exp/temperature/90degree.png" height = "450"></div><p>How likely do you think the waiter will respond with each of the utterances below?</p>'},
+        {temperature:'<div><img src="./visual stimuli-exp/temperature/10degree.png" height = "450"></div><p>How likely do you think it is that the waiter will respond with each of the utterances below?</p>'},
+        {temperature:'<div><img src="./visual stimuli-exp/temperature/20degree.png" height = "450"></div><p>How likely do you think it is that the waiter will respond with each of the utterances below?</p>'},
+        {temperature:'<div><img src="./visual stimuli-exp/temperature/30degree.png" height = "450"></div><p>How likely do you think it is that the waiter will respond with each of the utterances below?</p>'},
+        {temperature:'<div><img src="./visual stimuli-exp/temperature/40degree.png" height = "450"></div><p>How likely do you think it is that the waiter will respond with each of the utterances below?</p>'},
+        {temperature:'<div><img src="./visual stimuli-exp/temperature/50degree.png" height = "450"></div><p>How likely do you think it is that the waiter will respond with each of the utterances below?</p>'},
+        {temperature:'<div><img src="./visual stimuli-exp/temperature/60degree.png" height = "450"></div><p>How likely do you think it is that the waiter will respond with each of the utterances below?</p>'},
+        {temperature:'<div><img src="./visual stimuli-exp/temperature/70degree.png" height = "450"></div><p>How likely do you think it is that the waiter will respond with each of the utterances below?</p>'},
+        {temperature:'<div><img src="./visual stimuli-exp/temperature/80degree.png" height = "450"></div><p>How likely do you think it is that the waiter will respond with each of the utterances below?</p>'},
+        {temperature:'<div><img src="./visual stimuli-exp/temperature/90degree.png" height = "450"></div><p>How likely do you think it is that the waiter will respond with each of the utterances below?</p>'},
     ],
     randomize_order: true,
     repetitions: 2
@@ -67,27 +79,39 @@ const temperature_procedure = {
 
 timeline.push(temperature_procedure);
 
+
+
+// Introduction of grade trials
+const intro_grade = {
+    type:jsPsychHtmlButtonResponse,
+    stimulus: "<p>Congratulations! You have finished the first task. In the second part, you will see a similar scene presented below. In the scene, the boy on the left wondered about Jack's academic performance but he could not see Jack's exam results and had to ask the girl. While the girl was able to see Jack's exam results and gave relevant answer.</p><div><img src='./visual stimuli-exp/grades/11wrong.png' height = '450'></div>",
+    prompt: '<p>If you have understood the example scene, please click the button and the second task will begin.</p>',
+    choices: ['Continue']
+}
+
+timeline.push(intro_grade);
+
 //trials of grade
 const trial_of_grade={
     type: jsPsychHtmlMultiSliderResponse,
     stimulus: jsPsych.timelineVariable('mark'),
     num_sliders: 4,
     force_total: 100,
-    slider_labels: ["He is a good student", "He is an excellent student", "He is a perfect student", "Something else"],
+    slider_labels: ["He is a good student", "He is an excellent student", "He is a perfect student", "<em>Something else</em>"],
     slider_width: 800
 }
 const grade_procedure = {
     timeline: [trial_of_grade],
     timeline_variables: [
-        {mark:'<div><img src="./visual stimuli-exp/grades/30wrong.png" height = "450"></div><p>How likely do you think the girl will respond with each of the utterances below?</p>'},
-        {mark:'<div><img src="./visual stimuli-exp/grades/13wrong.png" height = "450"></div><p>How likely do you think the girl will respond with each of the utterances below?</p>'},
-        {mark:'<div><img src="./visual stimuli-exp/grades/11wrong.png" height = "450"></div><p>How likely do you think the girl will respond with each of the utterances below?</p>'},
-        {mark:'<div><img src="./visual stimuli-exp/grades/9wrong.png" height = "450"></div><p>How likely do you think the girl will respond with each of the utterances below?</p>'},
-        {mark:'<div><img src="./visual stimuli-exp/grades/7wrong.png" height = "450"></div><p>How likely do you think the girl will respond with each of the utterances below?</p>'},
-        {mark:'<div><img src="./visual stimuli-exp/grades/5wrong.png" height = "450"></div><p>How likely do you think the girl will respond with each of the utterances below?</p>'},
-        {mark:'<div><img src="./visual stimuli-exp/grades/3wrong.png" height = "450"></div><p>How likely do you think the girl will respond with each of the utterances below?</p>'},
-        {mark:'<div><img src="./visual stimuli-exp/grades/1wrong.png" height = "450"></div><p>How likely do you think the girl will respond with each of the utterances below?</p>'},
-        {mark:'<div><img src="./visual stimuli-exp/grades/0wrong.png" height = "450"></div><p>How likely do you think the girl will respond with each of the utterances below?</p>'},
+        {mark:'<div><img src="./visual stimuli-exp/grades/30wrong.png" height = "450"></div><p>How likely do you think it is that the girl will respond with each of the utterances below?</p>'},
+        {mark:'<div><img src="./visual stimuli-exp/grades/13wrong.png" height = "450"></div><p>How likely do you think it is that the girl will respond with each of the utterances below?</p>'},
+        {mark:'<div><img src="./visual stimuli-exp/grades/11wrong.png" height = "450"></div><p>How likely do you think it is that the girl will respond with each of the utterances below?</p>'},
+        {mark:'<div><img src="./visual stimuli-exp/grades/9wrong.png" height = "450"></div><p>How likely do you think it is that the girl will respond with each of the utterances below?</p>'},
+        {mark:'<div><img src="./visual stimuli-exp/grades/7wrong.png" height = "450"></div><p>How likely do you think it is that the girl will respond with each of the utterances below?</p>'},
+        {mark:'<div><img src="./visual stimuli-exp/grades/5wrong.png" height = "450"></div><p>How likely do you think it is that the girl will respond with each of the utterances below?</p>'},
+        {mark:'<div><img src="./visual stimuli-exp/grades/3wrong.png" height = "450"></div><p>How likely do you think it is that the girl will respond with each of the utterances below?</p>'},
+        {mark:'<div><img src="./visual stimuli-exp/grades/1wrong.png" height = "450"></div><p>How likely do you think it is that the girl will respond with each of the utterances below?</p>'},
+        {mark:'<div><img src="./visual stimuli-exp/grades/0wrong.png" height = "450"></div><p>How likely do you think it is that the girl will respond with each of the utterances below?</p>'},
     ],
     randomize_order: true,
     repetitions: 2
@@ -95,27 +119,38 @@ const grade_procedure = {
 
 timeline.push(grade_procedure);
 
+
+// Introduction of cleanness trials
+const intro_cleanness = {
+    type:jsPsychHtmlButtonResponse,
+    stimulus: "<p>Congratulations! You have finished the second task. In the third part, you will see a similar scene presented below. In the scene, the woman on the left planned to do housework but she did not know whether the windows should be cleaned and had to ask the man in the building. While the man knew the cleanness of windows and gave relevant answer.</p><div><img src='./visual stimuli-exp/clean/15clean.png' height = '450'></div>",
+    prompt: '<p>If you have understood the example scene, please click the button and the third task will begin.</p>',
+    choices: ['Continue']
+}
+
+timeline.push(intro_cleanness);
+
 //trials of cleanness
 const trial_of_cleanness = {
     type: jsPsychHtmlMultiSliderResponse,
     stimulus: jsPsych.timelineVariable('cleanness'),
     num_sliders: 4,
     force_total: 100,
-    slider_labels: ["They are cleanish", "They are clean", "They are spotless", "Something else"],
+    slider_labels: ["They are cleanish", "They are clean", "They are spotless", "<em>Something else</em>"],
     slider_width: 800
 }
 const cleanness_procedure = {
     timeline: [trial_of_cleanness],
     timeline_variables: [
-        {cleanness:'<div><img src="./visual stimuli-exp/clean/100dirty.png" height = "450"></div><p>How likely do you think the man will respond with each of the utterances below?</p>'},
-        {cleanness:'<div><img src="./visual stimuli-exp/clean/60dirty.png" height = "450"></div><p>How likely do you think the man will respond with each of the utterances below?</p>'},
-        {cleanness:'<div><img src="./visual stimuli-exp/clean/45dirty.png" height = "450"></div><p>How likely do you think the man will respond with each of the utterances below?</p>'},
-        {cleanness:'<div><img src="./visual stimuli-exp/clean/30clean.png" height = "450"></div><p>How likely do you think the man will respond with each of the utterances below?</p>'},
-        {cleanness:'<div><img src="./visual stimuli-exp/clean/15clean.png" height = "450"></div><p>How likely do you think the man will respond with each of the utterances below?</p>'},
-        {cleanness:'<div><img src="./visual stimuli-exp/clean/0clean-or-spotless.png" height = "450"></div><p>How likely do you think the man will respond with each of the utterances below?</p>'},
-        {cleanness:'<div><img src="./visual stimuli-exp/clean/0spotless.png" height = "450"></div><p>How likely do you think the man will respond with each of the utterances below?</p>'},
-        {cleanness:'<div><img src="./visual stimuli-exp/clean/0spotless-light2.png" height = "450"></div><p>How likely do you think the man will respond with each of the utterances below?</p>'},
-        {cleanness:'<div><img src="./visual stimuli-exp/clean/0spotless-light4.png" height = "450"></div><p>How likely do you think the man will respond with each of the utterances below?</p>'},
+        {cleanness:'<div><img src="./visual stimuli-exp/clean/100dirty.png" height = "450"></div><p>How likely do you think it is that the man will respond with each of the utterances below?</p>'},
+        {cleanness:'<div><img src="./visual stimuli-exp/clean/60dirty-withspots.png" height = "450"></div><p>How likely do you think it is that the man will respond with each of the utterances below?</p>'},
+        {cleanness:'<div><img src="./visual stimuli-exp/clean/45dirty-withspots.png" height = "450"></div><p>How likely do you think it is that the man will respond with each of the utterances below?</p>'},
+        {cleanness:'<div><img src="./visual stimuli-exp/clean/30clean.png" height = "450"></div><p>How likely do you think it is that the man will respond with each of the utterances below?</p>'},
+        {cleanness:'<div><img src="./visual stimuli-exp/clean/15clean.png" height = "450"></div><p>How likely do you think it is that the man will respond with each of the utterances below?</p>'},
+        {cleanness:'<div><img src="./visual stimuli-exp/clean/0clean-or-spotless.png" height = "450"></div><p>How likely do you think it is that the man will respond with each of the utterances below?</p>'},
+        {cleanness:'<div><img src="./visual stimuli-exp/clean/0spotless.png" height = "450"></div><p>How likely do you think it is that the man will respond with each of the utterances below?</p>'},
+        {cleanness:'<div><img src="./visual stimuli-exp/clean/0spotless-light2.png" height = "450"></div><p>How likely do you think it is that the man will respond with each of the utterances below?</p>'},
+        {cleanness:'<div><img src="./visual stimuli-exp/clean/0spotless-light4.png" height = "450"></div><p>How likely do you think it is that the man will respond with each of the utterances below?</p>'},
     ],
     randomize_order: true,
     repetitions: 2
@@ -134,7 +169,7 @@ timeline.push(exit_fullscreen);
 //Reminder: The end of the language experiment
 const end_of_experiment = {
     type:jsPsychHtmlKeyboardResponse,
-    stimulus:'<p style = "font-size: 30px;">Thanks for participation. This is the end of language experiment.<br>Please press the space bar to exit.</p>',
+    stimulus:'<p style = "font-size: 25px;">Thank you for your participation.<br>This is the end of the experiment and you will now be redirected to Prolific.</p>',
     trial_duration: null,
     choices:[' ']
 }
