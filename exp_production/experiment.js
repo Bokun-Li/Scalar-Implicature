@@ -44,7 +44,7 @@ timeline.push(enter_fullscreen);
 // Introduction of temperature trials
 const intro_temperature = {
     type:jsPsychHtmlButtonResponse,
-    stimulus: '<p>The experiment is divided into three parts. In the first part, you will see a similar scene presented below. In the scene, the customer on the left wanted to drink some tea but he did not know the water temperature and had to ask the waiter. While the waiter used a thermometer to measure water temperature and gave relevant answer.</p><div><img src="./visual stimuli-exp/temperature/20degree.png" height = "450"></div>',
+    stimulus: '<p>The experiment is divided into three parts. In the first part, you will see a similar scene as the one presented below. In each scene, the person on the left is waiting for some hot water for a cup of tea and asks the waiter whether the water is ready. The waiter checks the temperature on the thermometer before responding.</p><div><img src="./visual stimuli-exp/temperature/20degree.png" height = "450"></div>',
     prompt: '<p>If you have understood the example scene, please click the button and the first task will begin.</p>',
     choices: ['Continue']
 }
@@ -84,7 +84,7 @@ timeline.push(temperature_procedure);
 // Introduction of grade trials
 const intro_grade = {
     type:jsPsychHtmlButtonResponse,
-    stimulus: "<p>Congratulations! You have finished the first task. In the second part, you will see a similar scene presented below. In the scene, the boy on the left wondered about Jack's academic performance but he could not see Jack's exam results and had to ask the girl. While the girl was able to see Jack's exam results and gave relevant answer.</p><div><img src='./visual stimuli-exp/grades/11wrong.png' height = '450'></div>",
+    stimulus: "<p>Congratulations! You have completed the first part. In the second part, you will see scenes similar to the one presented below. In each scene, the boy on the left is wondering about Jack's academic performance but he hasn't seen any of Jack's test results. The girl on the right answers based on Jack's most recent test results, which are shown in the middle.</p><div><img src='./visual stimuli-exp/grades/11wrong.png' height = '450'></div>",
     prompt: '<p>If you have understood the example scene, please click the button and the second task will begin.</p>',
     choices: ['Continue']
 }
@@ -123,7 +123,7 @@ timeline.push(grade_procedure);
 // Introduction of cleanness trials
 const intro_cleanness = {
     type:jsPsychHtmlButtonResponse,
-    stimulus: "<p>Congratulations! You have finished the second task. In the third part, you will see a similar scene presented below. In the scene, the woman on the left planned to do housework but she did not know whether the windows should be cleaned and had to ask the man in the building. While the man knew the cleanness of windows and gave relevant answer.</p><div><img src='./visual stimuli-exp/clean/15clean.png' height = '450'></div>",
+    stimulus: "<p>Congratulations! You have completed the second task. In the third part, you will see scenes similar to the one presented below. In each scene, the woman on the left is managing several buildings and needs to know whether the windows of one of the buildings need to be cleaned. She calls her colleague who works in that building to ask him about the state of the windows.</p><div><img src='./visual stimuli-exp/clean/15clean.png' height = '450'></div>",
     prompt: '<p>If you have understood the example scene, please click the button and the third task will begin.</p>',
     choices: ['Continue']
 }
@@ -166,16 +166,27 @@ const exit_fullscreen = {
 
 timeline.push(exit_fullscreen);
 
+//The ending comment box
+const commentbox = {
+    type: jsPsychSurveyText,
+    questions: [
+        {prompt: '<p style = "font-size: 20px;">If you have any comments about the experiment, please add them to the comment box below:</p>', name: 'Comment', rows: 8}
+    ],
+    button_label: 'End'
+}
+
+timeline.push(commentbox);
+
 //Reminder: The end of the language experiment
 const end_of_experiment = {
     type:jsPsychHtmlKeyboardResponse,
     stimulus:'<p style = "font-size: 25px;">Thank you for your participation.<br>This is the end of the experiment and you will now be redirected to Prolific.</p>',
-    trial_duration: null,
+    trial_duration: 2000,
     choices:[' ']
 }
 
 timeline.push(end_of_experiment);
 
-jsPsych.run(timeline)
 
+jsPsych.run(timeline)
 
