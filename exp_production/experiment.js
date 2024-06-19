@@ -170,7 +170,7 @@ timeline.push(exit_fullscreen);
 const commentbox = {
     type: jsPsychSurveyText,
     questions: [
-        {prompt: '<p style = "font-size: 20px;">If you have any comments about the experiment, please add them to the comment box below:</p>', name: 'Comment', rows: 10, columns: 80}
+        {prompt: '<p style = "font-size: 20px;">If you encountered any technical difficulties, found anything odd, or if you have any other comments about the experiment that you would like to share with us, please type them in the box below:</p>', name: 'Comment', rows: 10, columns: 80}
     ],
     button_label: 'End'
 }
@@ -189,4 +189,5 @@ timeline.push(end_of_experiment);
 
 
 jsPsych.run(timeline)
+
 
