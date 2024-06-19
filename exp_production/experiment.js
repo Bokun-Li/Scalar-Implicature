@@ -3,8 +3,11 @@ const jsPsych = initJsPsych({
     on_finish: function(data) {
         proliferate.submit({"trials": data.values()});
     },
-    show_progress_bar: true
+    show_progress_bar: true,
+    auto_update_progress_bar: false
 });
+
+var n_trials = 54
 
 let timeline = []
 // push experiment logic the timeline here...
@@ -58,7 +61,15 @@ const trial_of_temperature = {
     num_sliders: 4,
     force_total: 100,
     slider_labels: ["It is warm", "It is hot", "It is scalding", "<em>Something else</em>"],
-    slider_width: 800
+    slider_width: 800,
+
+    // The parameter of controlling progress bar
+    on_finish: function(){
+        // at the end of each trial, update the progress bar
+        // based on the current value and the proportion to update for each trial
+        var curr_progress_bar_value = jsPsych.getProgressBarCompleted();
+        jsPsych.setProgressBar(curr_progress_bar_value + (1/n_trials));
+    }
 }
 const temperature_procedure = {
     timeline: [trial_of_temperature],
@@ -98,7 +109,13 @@ const trial_of_grade={
     num_sliders: 4,
     force_total: 100,
     slider_labels: ["He is a good student", "He is an excellent student", "He is a perfect student", "<em>Something else</em>"],
-    slider_width: 800
+    slider_width: 800,
+
+    // parameter of controlling progress bar
+    on_finish: function(){
+        var curr_progress_bar_value = jsPsych.getProgressBarCompleted();
+        jsPsych.setProgressBar(curr_progress_bar_value + (1/n_trials));
+    }
 }
 const grade_procedure = {
     timeline: [trial_of_grade],
@@ -137,8 +154,15 @@ const trial_of_cleanness = {
     num_sliders: 4,
     force_total: 100,
     slider_labels: ["They are cleanish", "They are clean", "They are spotless", "<em>Something else</em>"],
-    slider_width: 800
+    slider_width: 800,
+
+    // parameter of controlling progress bar
+    on_finish: function(){
+        var curr_progress_bar_value = jsPsych.getProgressBarCompleted();
+        jsPsych.setProgressBar(curr_progress_bar_value + (1/n_trials));
+    }
 }
+
 const cleanness_procedure = {
     timeline: [trial_of_cleanness],
     timeline_variables: [
