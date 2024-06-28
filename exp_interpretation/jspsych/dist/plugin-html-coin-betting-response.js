@@ -49,7 +49,7 @@ var jsPsychHtmlCoinBettingResponse = (function (jspsych) {
           html += '<table>';
           html += '<tr>';
           for (var j = 0; j < trial.images.length; j++) {
-            html += '<td style="padding-bottom:20px;" class="jspsych-betting-col-' + j + '"><img id="jspsych-betting-img-' + j + '" src="' + trial.images[j] + '"></td>';
+            html += '<td style="padding-bottom:10px;" class="jspsych-betting-col-' + j + '"><img id="jspsych-betting-img-' + j + '" src="' + trial.images[j] + '"></td>';
           }
           html += '</tr>';
           html += '<tr style="text-align:right;">';

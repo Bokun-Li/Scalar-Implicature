@@ -140,9 +140,9 @@ const trial_of_temperature = {
 const temperature_procedure = {
     timeline: [trial_of_temperature],
     timeline_variables: [
-        {temperature:'<div><img src="./visual stimuli-exp/temperature/visualized_temperature_context/visualized_warm.png" height = "270"></div><p>Which thermometer do you think show the water temperature? Use the "+" and "&ndash;" buttons to distribute 10 coins across the likely thermometers.</p>'},
-        {temperature:'<div><img src="./visual stimuli-exp/temperature/visualized_temperature_context/visualized_hot.png" height = "270"></div><p>Which thermometer do you think show the water temperature? Use the "+" and "&ndash;" buttons to distribute 10 coins across the likely thermometers.</p>'},
-        {temperature:'<div><img src="./visual stimuli-exp/temperature/visualized_temperature_context/visualized_scalding.png" height = "270"></div><p>Which thermometer do you think show the water temperature? Use the "+" and "&ndash;" buttons to distribute 10 coins across the likely thermometers.</p>'},
+        {temperature:'<div><img src="./visual stimuli-exp/temperature/visualized_temperature_context/visualized_warm.png" height = "270"></div><p style="margin: 8px 0px;">Which thermometer do you think show the water temperature? Use the "+" and "&ndash;" buttons to distribute 10 coins across the likely thermometers.</p>'},
+        {temperature:'<div><img src="./visual stimuli-exp/temperature/visualized_temperature_context/visualized_hot.png" height = "270"></div><p style="margin: 8px 0px;">Which thermometer do you think show the water temperature? Use the "+" and "&ndash;" buttons to distribute 10 coins across the likely thermometers.</p>'},
+        {temperature:'<div><img src="./visual stimuli-exp/temperature/visualized_temperature_context/visualized_scalding.png" height = "270"></div><p style="margin: 8px 0px;">Which thermometer do you think show the water temperature? Use the "+" and "&ndash;" buttons to distribute 10 coins across the likely thermometers.</p>'},
     ],
     randomize_order: true,
     repetitions: 2
@@ -187,9 +187,9 @@ const trial_of_grade={
 const grade_procedure = {
     timeline: [trial_of_grade],
     timeline_variables: [
-        {mark:'<div><img src="./visual stimuli-exp/grades/visualized_grades_context/visualized_good.png" height = "270"></div><p>Which examination sheet do you think is on the desk? Use the "+" and "&ndash;" buttons to distribute 10 coins across the likely examination sheets.</p>'},
-        {mark:'<div><img src="./visual stimuli-exp/grades/visualized_grades_context/visualized_excellent.png" height = "270"></div><p>Which examination sheet do you think is on the desk? Use the "+" and "&ndash;" buttons to distribute 10 coins across the likely examination sheets.</p>'},
-        {mark:'<div><img src="./visual stimuli-exp/grades/visualized_grades_context/visualized_perfect.png" height = "270"></div><p>Which examination sheet do you think is on the desk? Use the "+" and "&ndash;" buttons to distribute 10 coins across the likely examination sheets.</p>'},
+        {mark:'<div><img src="./visual stimuli-exp/grades/visualized_grades_context/visualized_good.png" height = "330"></div><p style="margin: 8px 0px;">Which examination sheet do you think is on the desk? Use the "+" and "&ndash;" buttons to distribute 10 coins across the likely examination sheets.</p>'},
+        {mark:'<div><img src="./visual stimuli-exp/grades/visualized_grades_context/visualized_excellent.png" height = "330"></div><p style="margin: 8px 0px;">Which examination sheet do you think is on the desk? Use the "+" and "&ndash;" buttons to distribute 10 coins across the likely examination sheets.</p>'},
+        {mark:'<div><img src="./visual stimuli-exp/grades/visualized_grades_context/visualized_perfect.png" height = "330"></div><p style="margin: 8px 0px;">Which examination sheet do you think is on the desk? Use the "+" and "&ndash;" buttons to distribute 10 coins across the likely examination sheets.</p>'},
     ],
     randomize_order: true,
     repetitions: 2
@@ -201,7 +201,7 @@ timeline.push(grade_procedure);
 // Introduction of cleanness trials (改 text instruction)
 const intro_cleanness = {
     type:jsPsychHtmlButtonResponse,
-    stimulus: "<p>Congratulations! You have completed the second task. In the third part, you will see scenes similar to the one presented below. In each scene, the woman on the left is managing several buildings and needs to know whether the windows of one of the buildings need to be cleaned. She calls her colleague who works in that building to ask him about the state of the windows.</p><div><img src='./visual stimuli-exp/clean/15clean.png' height = '450'></div>",
+    stimulus: "<p>Congratulations! You have completed the second task. In the third part, you will see scenes similar to the one presented below. In each scene, the woman on the left is managing several buildings and needs to know whether the windows of one of the buildings need to be cleaned. She calls her colleague who works in that building to ask him about the state of the windows.</p><div><img src='./visual stimuli-exp/clean/visualized_cleaness_context/visualized_cleanish.png' height = '450'></div>",
     prompt: '<p>If you have understood the example scene, please click the button and the third task will begin.</p>',
     choices: ['Continue']
 }
@@ -234,9 +234,9 @@ const trial_of_cleanness = {
 const cleanness_procedure = {
     timeline: [trial_of_cleanness],
     timeline_variables: [
-        {cleanness:'<div><img src="./visual stimuli-exp/clean/visualized_cleaness_context/visualized_cleanish.png" height = "270"></div><p>Which windows do you think are on the wall? Use the "+" and "&ndash;" buttons to distribute 10 coins across the likely windows.</p>'},
-        {cleanness:'<div><img src="./visual stimuli-exp/clean/visualized_cleaness_context/visualized_clean.png" height = "270"></div><p>Which windows do you think are on the wall? Use the "+" and "&ndash;" buttons to distribute 10 coins across the likely windows.</p>'},
-        {cleanness:'<div><img src="./visual stimuli-exp/clean/visualized_cleaness_context/visualized_spotless.png" height = "270"></div><p>Which windows do you think are on the wall? Use the "+" and "&ndash;" buttons to distribute 10 coins across the likely windows.</p>'},
+        {cleanness:'<div><img src="./visual stimuli-exp/clean/visualized_cleaness_context/visualized_cleanish.png" height = "310"></div><p style="margin: 8px 0px;">Which windows do you think are on the wall? Use the "+" and "&ndash;" buttons to distribute 10 coins across the likely windows.</p>'},
+        {cleanness:'<div><img src="./visual stimuli-exp/clean/visualized_cleaness_context/visualized_clean.png" height = "310"></div><p style="margin: 8px 0px;">Which windows do you think are on the wall? Use the "+" and "&ndash;" buttons to distribute 10 coins across the likely windows.</p>'},
+        {cleanness:'<div><img src="./visual stimuli-exp/clean/visualized_cleaness_context/visualized_spotless.png" height = "310"></div><p style="margin: 8px 0px;">Which windows do you think are on the wall? Use the "+" and "&ndash;" buttons to distribute 10 coins across the likely windows.</p>'},
     ],
     randomize_order: true,
     repetitions: 2
