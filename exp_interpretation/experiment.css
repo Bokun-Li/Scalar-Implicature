@@ -9,4 +9,6 @@
     margin: 5px 0;
 }
 
-
+div#jspsych-html-coin-betting-response-wrapper>div>table {
+    width:100%
+}
