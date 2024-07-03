@@ -84,10 +84,10 @@ const consent2 = {
 timeline.push(consent2);
 
 
-// the utterance_picture_matching_task to calculate P(w|u) [trials of interpretation]（改 text instruction）
+// the utterance_picture_matching_task to calculate P(w|u) [trials of interpretation]（text instruction）
 const utterance_picture_matching_task = {
     type: jsPsychHtmlKeyboardResponse,
-    stimulus: "In this experiment, you will see several scenes and answer questions about them. On each slide, you will see a picture and several utterances. Please move the sliders for each utterance to indicate how likely you think it is that the speaker would say this.<br>Note: The ratings must add up to 100 and the sliders will automatically snap back if you try to assign more than 100 points.<br>The experiment is conducted in fullscreen mode. When you're ready to begin, please press the space bar.",
+    stimulus: "In this experiment, you will see several conversational scenes and answer questions about them. On each slide, you will see one scene and several relevant images. Please click the buttons and distribute 10 coins across the likely images based on the conversation in the scene.<br>Note: You are not required to distribute every image a coin, so please just select the set of likely images for coin distribution.<br>The experiment is conducted in fullscreen mode. When you're ready to begin, please press the space bar.",
     choices: [" "]
 }
 
@@ -103,10 +103,10 @@ timeline.push(enter_fullscreen);
 
 
 
-// Introduction of temperature trials (改 text instruction)
+// Introduction of temperature trials (text instruction)
 const intro_temperature = {
     type:jsPsychHtmlButtonResponse,
-    stimulus: '<p>The experiment is divided into three parts. In the first part, you will see a similar scene as the one presented below. In each scene, the person on the left is waiting for some hot water for a cup of tea and asks the waiter whether the water is ready. The waiter checks the temperature on the thermometer before responding.</p><div><img src="./visual stimuli-exp/temperature/visualized_temperature_context/visualized_warm.png" height = "450"></div>',
+    stimulus: '<p>The experiment is divided into three parts. In the first part, you will see a similar scene as the one presented below. In each scene, the person on the left is waiting for some hot water for a cup of tea and asks the waiter whether the water is ready. The waiter checks the temperature on the thermometer and then gives a relevant response.</p><div><img src="./visual stimuli-exp/temperature/visualized_temperature_context/visualized_warm.png" height = "450"></div>',
     prompt: '<p>If you have understood the example scene, please click the button and the first task will begin.</p>',
     choices: ['Continue']
 }
@@ -152,10 +152,10 @@ timeline.push(temperature_procedure);
 
 
 
-// Introduction of grade trials (改 text instruction)
+// Introduction of grade trials (text instruction)
 const intro_grade = {
     type:jsPsychHtmlButtonResponse,
-    stimulus: "<p>Congratulations! You have completed the first part. In the second part, you will see scenes similar to the one presented below. In each scene, the boy on the left is wondering about Jack's academic performance but he hasn't seen any of Jack's test results. The girl on the right answers based on Jack's most recent test results, which are shown in the middle.</p><div><img src='./visual stimuli-exp/grades/visualized_grades_context/visualized_good.png' height = '450'></div>",
+    stimulus: "<p>Congratulations! You have completed the first part. In the second part, you will see scenes similar to the one presented below. In each scene, the boy on the left is wondering about Jack's academic performance but he hasn't seen any of Jack's test results. The girl on the right answers his question based on Jack's most recent test results, which are shown in the middle.</p><div><img src='./visual stimuli-exp/grades/visualized_grades_context/visualized_good.png' height = '450'></div>",
     prompt: '<p>If you have understood the example scene, please click the button and the second task will begin.</p>',
     choices: ['Continue']
 }
@@ -198,10 +198,10 @@ const grade_procedure = {
 timeline.push(grade_procedure);
 
 
-// Introduction of cleanness trials (改 text instruction)
+// Introduction of cleanness trials (text instruction)
 const intro_cleanness = {
     type:jsPsychHtmlButtonResponse,
-    stimulus: "<p>Congratulations! You have completed the second task. In the third part, you will see scenes similar to the one presented below. In each scene, the woman on the left is managing several buildings and needs to know whether the windows of one of the buildings need to be cleaned. She calls her colleague who works in that building to ask him about the state of the windows.</p><div><img src='./visual stimuli-exp/clean/visualized_cleaness_context/visualized_cleanish.png' height = '450'></div>",
+    stimulus: "<p>Congratulations! You have completed the second task. In the third part, you will see scenes similar to the one presented below. In each scene, the woman on the left is managing several buildings and needs to know whether the windows of one of the buildings need to be cleaned. She calls her colleague who works in that building to ask him about the state of the windows. The man gives a relevant answer after checking the cleaness of the windows.</p><div><img src='./visual stimuli-exp/clean/visualized_cleaness_context/visualized_cleanish.png' height = '450'></div>",
     prompt: '<p>If you have understood the example scene, please click the button and the third task will begin.</p>',
     choices: ['Continue']
 }
