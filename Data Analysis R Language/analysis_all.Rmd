@@ -1,0 +1,296 @@
+---
+title: "Experiment analysis"
+output:
+  html_document:
+    df_print: paged
+---
+
+
+```{r load_libraries}
+
+#library for manipulating data
+library(tidyverse)
+
+#library for plotting
+library(ggplot2)
+library(ggrepel)
+
+theme_set(theme_bw())
+
+
+
+```
+
+#### Load data
+
+This command reads in the data from the experiment and stores it as a dataframe called `data` (basically a table).
+
+```{r load_data}
+
+data = read.csv("production_expectation_experiment-trials-processed.csv")
+
+```
+
+#### Add scale type information to each row (we extract this from the first slider label)
+
+This command adds a new column "scale" to the `data` dataframe. We do this by mapping the utterance from slider_0 to the various scales. (Needs to be adapted for different experiments!)
+
+One thing that works well in R is to use the pipe (`%>%`) which allows you to repeatdly process dataframes.
+
+In this case, we are using the `data` variable and then passing it to the `mutate` function using the pipe.
+This is particularly handy when we want to apply several transformations one after another.
+
+```{r add_scale_value}
+
+data = data %>%
+  mutate(scale = case_when(
+    slider_0 == "It is warm" ~ "scalding, hot, warm",
+    slider_0 == "He is a good student" ~ "perfect, excellent, good",
+    slider_0 == "They are cleanish" ~ "spotless, clean, cleanish"
+  ))
+
+```
+
+
+#### Turn data into long format, so that each rating is in one line
+
+For plotting and processing the data, it is better to have a dataframe where each row has exactly one rating. So if there are three utterances on a single trial, we will create three rows instead of one.
+
+Here we are again using the pipe (`%>%`) to pass along the result of each function to the next function. To understand what is going on here, you can execute these commands one by one by selecting everything up until a pipe and then executing only that part, e.g., by running only the following part: 
+
+```
+data_long = data %>% 
+dplyr::select(workerid, response_0, response_1, response_2, response_3, 
+rt, slider_0, slider_1, slider_2, slider_3, scale_value, scale)
+
+```
+
+
+```{r long_data}
+
+data_long = data %>%
+  # We first select the fields we actually need.
+  # In this case, workerid, three of four responses, and three or four sliders,
+  # the scale, and the scale value.
+  dplyr::select(workerid, response_0, response_1, response_2, 
+         response_3, rt, slider_0, slider_1, slider_2, 
+         slider_3, scale_value, scale) %>%
+  # The pivor_longet command takes the table, looks for columns starting with 'response' or
+  # with 'slider' and extracts the matching response and slider values
+  tidyr::pivot_longer(cols=matches("response_|slider_"), 
+                            names_to=c(".value", "slider"), 
+                            names_pattern="(response_|slider_)(.)", 
+                            values_drop_na=TRUE) %>%
+  # Finally, we rename the new fields response_ and slider_
+  dplyr::rename(response = response_,
+                utterance = slider_)
+
+```
+
+
+### Plot the data
+
+We use `ggplot2` for plotting the data. We first aggregate the data across participants using the `group_by` and `summarize` methods for computing the means for each combination of `scale_value`, `slider` and `scale`.
+
+We then plot this summarized data. The `aes` part in ggplot tells it which variables represent which parts of the plot. In our case, we plot the `scale_value` on the x-axis, the `response` on the y-axis, and the `slider` is going to determine the color of the plot.
+
+We then can add specific things to the plot. The `geom_line()` command adds lines to the plot, `facet_wrap` splits the plot into three subplots for each scale, and the `theme()` command removes the legend (because we are outputting the utterance for each line.)
+
+In the `data_ends` variable, we are creating datapoints to use to display the utterance for each line.
+
+```{r plot, fig.width=10, fig.height=4}
+
+data_ends = data_long %>% 
+  dplyr::group_by(scale_value, utterance, slider, scale) %>%
+  dplyr::summarize(response = mean(response)) %>%
+  dplyr::group_by(utterance, slider, scale) %>%
+  dplyr::filter(scale_value == max(scale_value)) %>%
+  dplyr::summarize(response = max(response), scale_value = max(scale_value)) %>%
+  mutate(utterance = str_replace_all(utterance, "</?em>", ""))
+  
+
+
+data_long %>% 
+  dplyr::group_by(scale_value, slider, scale) %>%
+  dplyr::summarize(response = mean(response)) %>%
+  ggplot(aes(x=scale_value, y=response, col=slider)) + geom_line() + facet_wrap(~scale, ncol = 3, scales = "free_x") +
+  theme(legend.position = "none") +
+  geom_text_repel(
+    aes(label = utterance), data = data_ends,
+    fontface ="plain", size = 3
+    ) + scale_x_continuous(n.breaks = 9)
+
+```
+
+### Plot individual results
+
+It can also be interesting to look at what individual participants did. In order to do this, we group the data not only by scale value, slider and scale but also by the workerid. That way we get one data point for each combination of these four variables, i.e., we get one datapoint for each participant and each scale, scale value and slider combination.
+
+To display every participant individually, we add the workerid to the `facet_wrap` panel. Now it creates a separate panel for each scale and participant.
+
+```{r indiv_plot, fig.width=10, fig.height=20}
+
+data_long %>% 
+  dplyr::group_by(scale_value, slider, scale, workerid) %>%
+  dplyr::summarize(response = mean(response)) %>%
+  ggplot(aes(x=scale_value, y=response, col=slider)) + geom_line() + 
+  facet_wrap(~scale + workerid, ncol = 5, scales = "free_x") +
+  theme(legend.position = "bottom")
+
+```
+
+
+### Load the interpretation data
+
+
+```{r load_data_int}
+
+data_int = read.csv("interpretation_experiment-trials-processed.csv")
+
+data_int = data_int %>%
+  mutate(scale = case_when(
+    scale_value %in% c("warm", "hot", "scalding") ~ "scalding, hot, warm",
+    scale_value %in% c("good", "excellent", "perfect")  ~ "perfect, excellent, good",
+    scale_value %in% c("cleanish", "clean", "spotless")  ~ "spotless, clean, cleanish"
+  ))
+
+
+```
+
+#### Turn data into long format, so that each rating is in one line
+
+```{r long_data_int}
+
+data_long_int = data_int %>%
+  # We first select the fields we actually need.
+  # In this case, workerid, three of four responses, and three or four sliders,
+  # the scale, and the scale value.
+  dplyr::select(workerid, response_0, response_1, response_2, 
+         response_3, response_4, response_5, response_6, response_7, response_8,
+         rt,  scale_value, scale) %>%
+  dplyr::rename(utterance = scale_value) %>%
+  # The pivor_longet command takes the table, looks for columns starting with 'response' or
+  # with 'slider' and extracts the matching response and slider values
+  tidyr::pivot_longer(cols=matches("response_"), 
+                            names_to=c("scale_value"), 
+                            names_pattern="response_(.)", 
+                            values_drop_na=TRUE) %>%
+  dplyr::mutate(scale_value = as.numeric(scale_value) + 1) %>%
+  dplyr::rename(response = value)
+
+
+```
+
+
+```{r plot_int,fig.width=10, fig.height=4}
+
+data_long_int %>% 
+  dplyr::group_by(scale_value, utterance, scale) %>%
+  dplyr::summarize(response = mean(response)) %>%
+  ggplot(aes(x=scale_value, y=response, col=utterance)) + geom_line() + facet_wrap(~scale, ncol = 3, scales = "free_x") +
+  theme(legend.position = "none") + scale_x_continuous(n.breaks = 9)
+
+```
+
+### Prepare data for correlation analysis
+
+```{r data_cor}
+
+data_long2 = data_long %>% 
+  dplyr::filter(utterance != "<em>something else<em>") %>%
+  dplyr::mutate(utterance = case_when(
+    utterance == "It is warm" ~ "warm",
+    utterance == "It is hot" ~ "hot",
+    utterance == "It is scalding" ~ "scalding",
+    utterance == "He is a good student" ~ "good",
+    utterance == "He is an excellent student" ~ "excellent",
+    utterance == "He is a perfect student" ~ "perfect",
+    utterance == "They are cleanish" ~ "cleanish",
+    utterance == "They are clean" ~ "clean",
+    utterance == "They are spotless" ~ "spotless"),
+    )
+
+
+data_prod_sum = data_long2 %>% 
+  dplyr::group_by(scale, scale_value, utterance) %>%
+  dplyr::summarize(production_response = mean(response))
+
+data_int_sum = data_long_int %>% 
+  dplyr::group_by(scale, scale_value, utterance) %>%
+  dplyr::summarize(interpretation_response = mean(response))
+
+
+data_cor = merge(data_prod_sum, data_int_sum, by=c("scale", "scale_value", "utterance"))
+    
+```
+
+## Do the production and comprehension responses correlate?
+
+```{r cor_analysis, fig.width=4, fig.height=4}
+data_cor %>% 
+  ggplot(aes(x=production_response, y=interpretation_response)) + 
+  geom_point() + 
+  facet_wrap(~scale)+
+  geom_smooth(method="lm")
+    
+m = lm(interpretation_response ~ production_response, data=data_cor)
+summary(m)
+
+cor(data_cor$interpretation_response, data_cor$production_response)
+
+```
+
+
+## What about implicatures?
+
+This code computes the overlap of the area under the curve between two expressions. This will return a value from 0 to 1, where 0 means there is no overlap at all (indication for strong implicature) and 1 means there is a lot of overlap (likely a weak implicature).
+
+```{r overlap_analysis, warning=FALSE, message=FALSE}
+
+
+comparisons = list(
+  c("good", "excellent"),
+  c("good", "perfect"),
+  c("excellent", "perfect"),
+  c("warm", "hot"),
+  c("hot", "scalding"),
+  c("warm", "scalding"),
+  c("cleanish", "clean"),
+  c("clean", "spotless"),
+  c("cleanish", "spotless")
+)
+
+for (comp in comparisons) {
+  print(comp)
+  distances = c()
+  for (wid in unique(data_long_int$workerid)) {
+    
+    # get distributon for expression 1
+    d1 = data_long_int %>% 
+      dplyr::filter(workerid == wid) %>%
+      dplyr::group_by(scale, utterance, scale_value) %>%
+      dplyr::summarize(response = mean(response/10)) %>%
+      dplyr::filter(utterance == comp[1]) %>%
+      dplyr::arrange(scale_value) %>% .$response
+  
+    # get distributon for expression 2
+    d2 = data_long_int %>% 
+      dplyr::filter(workerid == wid) %>%
+      dplyr::group_by(scale, utterance, scale_value) %>%
+      dplyr::summarize(response = mean(response/10)) %>%
+      dplyr::filter(utterance == comp[2]) %>%
+      dplyr::arrange(scale_value) %>% .$response
+    
+    # compute area under the curve for overlapping part
+    f = approxfun(1:9, pmin(d1,d2))
+    dist = integrate(f, 1, 9)$value
+    distances = cbind(distances, c(dist))
+
+  }
+  print(mean(distances))
+
+}
+
+```
+
+How do these values compare to the implicature rates found by other researchers?
