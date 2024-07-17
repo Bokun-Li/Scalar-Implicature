@@ -98,7 +98,7 @@ We then can add specific things to the plot. The `geom_line()` command adds line
 
 In the `data_ends` variable, we are creating datapoints to use to display the utterance for each line.
 
-```{r plot, fig.width=10, fig.height=4}
+```{r data_ends}
 
 data_ends = data_long %>% 
   dplyr::group_by(scale_value, utterance, slider, scale) %>%
@@ -107,18 +107,25 @@ data_ends = data_long %>%
   dplyr::filter(scale_value == max(scale_value)) %>%
   dplyr::summarize(response = max(response), scale_value = max(scale_value)) %>%
   mutate(utterance = str_replace_all(utterance, "</?em>", ""))
-  
+
+```
 
 
-data_long %>% 
+```{r plot, fig.width=10, fig.height=4}
+
+production_expectation = data_long %>% 
   dplyr::group_by(scale_value, slider, scale) %>%
   dplyr::summarize(response = mean(response)) %>%
   ggplot(aes(x=scale_value, y=response, col=slider)) + geom_line() + facet_wrap(~scale, ncol = 3, scales = "free_x") +
   theme(legend.position = "none") +
   geom_text_repel(
     aes(label = utterance), data = data_ends,
-    fontface ="plain", size = 3
+    fontface ="plain", size = 3, segment.color = "black"
     ) + scale_x_continuous(n.breaks = 9)
+
+plot(production_expectation)
+
+ggsave(filename = "./figure/production expectation.png", production_expectation, width = 15, height = 8, units = "cm")
 
 ```
 
@@ -181,15 +188,32 @@ data_long_int = data_int %>%
 
 ```
 
+```{r data_ends_int}
+data_ends_int = data_long_int %>%
+  dplyr::group_by(scale_value, utterance, scale) %>%
+  dplyr::summarize(response = mean(response)) %>%
+  dplyr::group_by(utterance, scale) %>%
+  dplyr::filter(scale_value == max(scale_value)) %>%
+  dplyr::summarize(response = max(response), scale_value = max(scale_value))
+
+```
 
 ```{r plot_int,fig.width=10, fig.height=4}
 
-data_long_int %>% 
+interpretation = data_long_int %>% 
   dplyr::group_by(scale_value, utterance, scale) %>%
   dplyr::summarize(response = mean(response)) %>%
   ggplot(aes(x=scale_value, y=response, col=utterance)) + geom_line() + facet_wrap(~scale, ncol = 3, scales = "free_x") +
-  theme(legend.position = "none") + scale_x_continuous(n.breaks = 9)
+  theme(legend.position = "none") + 
+  geom_text_repel(
+    aes(label = utterance), data = data_ends_int,
+    fontface = "plain", size = 3, segment.color = "black"
+  ) +
+  scale_x_continuous(n.breaks = 9)
 
+plot(interpretation)
+
+ggsave(filename = "./figure/interpretation.png", interpretation, width = 15, height = 8, units = "cm")
 ```
 
 ### Prepare data for correlation analysis
@@ -227,16 +251,19 @@ data_cor = merge(data_prod_sum, data_int_sum, by=c("scale", "scale_value", "utte
 ## Do the production and comprehension responses correlate?
 
 ```{r cor_analysis, fig.width=4, fig.height=4}
-data_cor %>% 
+correlation = data_cor %>% 
   ggplot(aes(x=production_response, y=interpretation_response)) + 
   geom_point() + 
-  facet_wrap(~scale)+
   geom_smooth(method="lm")
     
 m = lm(interpretation_response ~ production_response, data=data_cor)
 summary(m)
 
 cor(data_cor$interpretation_response, data_cor$production_response)
+
+plot(correlation)
+
+ggsave(filename = "./figure/correlation.png", correlation, width = 10, height = 10, units = "cm")
 
 ```
 
