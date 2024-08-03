@@ -1,0 +1,178 @@
+---
+title: "Semantic distance indicator"
+output: html_document
+date: "2024-08-02"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## R load_libraries
+```{r load_libraries}
+
+#library for manipulating data
+library(tidyverse)
+
+#library for plotting
+library(ggplot2)
+library(ggrepel)
+
+theme_set(theme_bw())
+
+
+```
+
+## R load the interpretation data
+```{r load_data}
+
+data_response = read.csv("interpretation_experiment-trials-processed.csv")
+
+data_response = data_response %>%
+  mutate(scale = case_when(
+    scale_value %in% c("warm", "hot", "scalding") ~ "scalding, hot, warm",
+    scale_value %in% c("good", "excellent", "perfect")  ~ "perfect, excellent, good",
+    scale_value %in% c("cleanish", "clean", "spotless")  ~ "spotless, clean, cleanish"
+  ))
+
+```
+
+## R Turn data into long format, so that each rating is in one line
+```{r long_data}
+
+data_long_response = data_response %>%
+  # Select the fields we actually need.
+  # In this case, workerid, three of four responses, and three or four sliders,
+  # the scale, and the scale value.
+  dplyr::select(workerid, response_0, response_1, response_2, 
+         response_3, response_4, response_5, response_6, response_7, response_8,
+         rt,  scale_value, scale) %>%
+  dplyr::rename(utterance = scale_value) %>%
+  # The pivor_longet command takes the table, looks for columns starting with 'response' or
+  # with 'slider' and extracts the matching response and slider values
+  tidyr::pivot_longer(cols=matches("response_"), 
+                            names_to=c("scale_value"), 
+                            names_pattern="response_(.)", 
+                            values_drop_na=TRUE) %>%
+  dplyr::mutate(scale_value = as.numeric(scale_value) + 1) %>%
+  dplyr::rename(response = value)
+
+
+
+```
+
+## R calculate average response values
+```{r average_response_values}
+
+scalar_interpretation = data_long_response %>% 
+  dplyr::group_by(scale_value, utterance, scale) %>%
+  dplyr::summarize(response = mean(response))
+
+```
+
+## Calculate the scalar implicature rate of two-value scales
+```{r scalar_implicature_rate}
+comparisons = list(
+  c("good", "excellent"),
+  c("good", "perfect"),
+  c("excellent", "perfect"),
+  c("warm", "hot"),
+  c("hot", "scalding"),
+  c("warm", "scalding"),
+  c("cleanish", "clean"),
+  c("clean", "spotless"),
+  c("cleanish", "spotless")
+)
+
+columns = c("weak", "strong", "scalar implicature rate")
+implicature_rate = data.frame(matrix(nrow = 0, ncol = length(columns)))
+
+
+for (comp in comparisons) {
+  print(comp)
+  distances = c()
+  for (wid in unique(data_long_response$workerid)) {
+    
+    # get distributon for expression 1
+    d1 = data_long_response %>% 
+      dplyr::filter(workerid == wid) %>%
+      dplyr::group_by(scale, utterance, scale_value) %>%
+      dplyr::summarize(response = mean(response/10)) %>%
+      dplyr::filter(utterance == comp[1]) %>%
+      dplyr::arrange(scale_value) %>% .$response
+  
+    # get distributon for expression 2
+    d2 = data_long_response %>% 
+      dplyr::filter(workerid == wid) %>%
+      dplyr::group_by(scale, utterance, scale_value) %>%
+      dplyr::summarize(response = mean(response/10)) %>%
+      dplyr::filter(utterance == comp[2]) %>%
+      dplyr::arrange(scale_value) %>% .$response
+    
+    # compute area under the curve for overlapping part
+    f = approxfun(1:9, pmin(d1,d2))
+    f2 = approxfun(1:9, d1)
+    dist = integrate(f, 1, 9)$value
+    dist2 = integrate(f2, 1, 9)$value
+    distances = cbind(distances, c(dist/dist2))
+    
+  }
+  
+  implicature_rate = rbind(implicature_rate, c(comp[1], comp[2], 1-mean(distances)))
+
+}
+
+colnames(implicature_rate) = columns
+
+```
+
+## The selection of world state gap with peak response value
+```{r peak_response_value}
+world_states = scalar_interpretation %>%
+  dplyr::group_by(utterance, scale)%>%
+  dplyr::filter(response == max(response))
+
+semantic_distances = data.frame()
+
+for (i in 1:nrow(implicature_rate)){
+  row = implicature_rate[i, ]
+  loc1 = which(world_states[, "utterance"] == row$strong)
+  loc2 = which(world_states[, "utterance"] == row$weak)
+  gap = world_states[loc1,"scale_value"]-world_states[loc2,"scale_value"]
+  row = cbind(row, gap)
+  semantic_distances = rbind(semantic_distances, row)
+}
+
+colnames(semantic_distances) = c("weak", "strong", "scalar_implicature_rate", 
+                                 "world_gap")
+
+semantic_distances$scalar_implicature_rate = round(as.numeric(semantic_distances$scalar_implicature_rate), 4)
+
+
+```
+
+## evaluate the correlation between world gap and implicature rate
+```{r correlation analysis}
+distance_correlation = semantic_distances %>%
+  ggplot(aes(x = world_gap, y = `scalar_implicature_rate`))+
+  geom_point()+
+  geom_smooth(method = "lm")
+
+cor_index = lm(scalar_implicature_rate ~ world_gap, data = semantic_distances)
+summary(cor_index)
+
+cor(semantic_distances$scalar_implicature_rate, semantic_distances$world_gap)
+
+plot(distance_correlation)
+
+ggsave(filename = "./figure/semantic_distance.png", distance_correlation
+       , width = 15, height = 15, units = "cm")
+```
+
+
+
+
+
+
+
+
